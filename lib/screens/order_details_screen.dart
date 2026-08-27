@@ -2,25 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../theme/app_theme.dart';
 
-class OrderItemBreakdown {
-  final String name;
-  final String service;
-  final int quantity;
-  final int price;
-
-  const OrderItemBreakdown({
-    required this.name,
-    required this.service,
-    required this.quantity,
-    required this.price,
-  });
-}
-
 class OrderDetailsScreen extends StatelessWidget {
   final String orderId;
   final String status;
-  final String completedDate;
-  final List<OrderItemBreakdown> items;
+  final String dateSubtitle;
+  final List<Map<String, dynamic>> items;
   final int subtotal;
   final int discount;
   final int grandTotal;
@@ -32,62 +18,55 @@ class OrderDetailsScreen extends StatelessWidget {
     super.key,
     this.orderId = '#YD-881590',
     this.status = 'DELIVERED',
-    this.completedDate = 'Completed on 18 Oct 2026, 4:15 PM',
+    this.dateSubtitle = 'Completed on 18 Oct 2026, 4:15 PM',
     this.items = const [
-      OrderItemBreakdown(
-        name: 'Shirt',
-        service: 'Wash & Iron',
-        quantity: 2,
-        price: 80,
-      ),
-      OrderItemBreakdown(
-        name: 'T-Shirt',
-        service: 'Wash & Iron',
-        quantity: 1,
-        price: 30,
-      ),
-      OrderItemBreakdown(
-        name: 'Bedsheet',
-        service: 'Wash & Fold',
-        quantity: 1,
-        price: 120,
-      ),
+      {
+        'name': 'Shirt',
+        'service': 'Wash & Iron',
+        'quantity': 2,
+        'price': 80,
+      },
+      {
+        'name': 'T-Shirt',
+        'service': 'Wash & Iron',
+        'quantity': 1,
+        'price': 30,
+      },
+      {
+        'name': 'Bedsheet',
+        'service': 'Wash & Fold',
+        'quantity': 1,
+        'price': 120,
+      },
     ],
     this.subtotal = 230,
     this.discount = 46,
     this.grandTotal = 184,
     this.deliveryAddress =
-        'Apartment 402, Block B, Silver Oak Residency, HSR Layout, Sector 3, Bangalore - 560102',
+        'Apartment 402, Block B, Silver Oak Residency,\nHSR Layout, Sector 3, Bangalore - 560102',
     this.riderName = 'Rahul',
     this.rating = 5.0,
   });
 
-  Color _getStatusBgColor() {
-    switch (status.toUpperCase()) {
-      case 'DELIVERED':
-        return const Color(0xFFECFDF5);
-      case 'CANCELLED':
-        return const Color(0xFFFEF2F2);
-      default:
-        return const Color(0xFFEFF6FF);
-    }
-  }
-
-  Color _getStatusTextColor() {
-    switch (status.toUpperCase()) {
-      case 'DELIVERED':
-        return const Color(0xFF059669);
-      case 'CANCELLED':
-        return const Color(0xFFDC2626);
-      default:
-        return AppColors.primary;
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
+    final isDelivered = status.toUpperCase() == 'DELIVERED';
+    final isCancelled = status.toUpperCase() == 'CANCELLED';
+
+    final badgeBg = isDelivered
+        ? const Color(0xFFECFDF5)
+        : isCancelled
+            ? const Color(0xFFFEF2F2)
+            : const Color(0xFFEFF6FF);
+
+    final badgeTextColor = isDelivered
+        ? const Color(0xFF059669)
+        : isCancelled
+            ? const Color(0xFFDC2626)
+            : AppColors.primary;
+
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: const Color(0xFFFAFAFC),
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
@@ -119,26 +98,12 @@ class OrderDetailsScreen extends StatelessWidget {
         centerTitle: false,
       ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Card 1: Order Header (ID & Status)
-            Container(
-              width: double.infinity,
-              padding: const EdgeInsets.all(18),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(18),
-                border: Border.all(color: const Color(0xFFE2E8F0), width: 1.2),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withValues(alpha: 0.02),
-                    blurRadius: 8,
-                    offset: const Offset(0, 2),
-                  ),
-                ],
-              ),
+            // 1. Order ID Card
+            _buildCard(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -148,7 +113,7 @@ class OrderDetailsScreen extends StatelessWidget {
                       Text(
                         'ID: $orderId',
                         style: GoogleFonts.plusJakartaSans(
-                          fontSize: 17,
+                          fontSize: 16,
                           fontWeight: FontWeight.w800,
                           color: AppColors.textPrimary,
                         ),
@@ -159,7 +124,7 @@ class OrderDetailsScreen extends StatelessWidget {
                           vertical: 4,
                         ),
                         decoration: BoxDecoration(
-                          color: _getStatusBgColor(),
+                          color: badgeBg,
                           borderRadius: BorderRadius.circular(6),
                         ),
                         child: Text(
@@ -167,16 +132,16 @@ class OrderDetailsScreen extends StatelessWidget {
                           style: GoogleFonts.plusJakartaSans(
                             fontSize: 11,
                             fontWeight: FontWeight.w800,
-                            color: _getStatusTextColor(),
+                            color: badgeTextColor,
                             letterSpacing: 0.4,
                           ),
                         ),
                       ),
                     ],
                   ),
-                  const SizedBox(height: 6),
+                  const SizedBox(height: 8),
                   Text(
-                    completedDate,
+                    dateSubtitle,
                     style: GoogleFonts.plusJakartaSans(
                       fontSize: 13,
                       fontWeight: FontWeight.w500,
@@ -187,188 +152,104 @@ class OrderDetailsScreen extends StatelessWidget {
               ),
             ),
 
-            const SizedBox(height: 16),
+            const SizedBox(height: 14),
 
-            // Card 2: Items Breakdown
-            Container(
-              width: double.infinity,
-              padding: const EdgeInsets.all(18),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(18),
-                border: Border.all(color: const Color(0xFFE2E8F0), width: 1.2),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withValues(alpha: 0.02),
-                    blurRadius: 8,
-                    offset: const Offset(0, 2),
-                  ),
-                ],
-              ),
+            // 2. Items Breakdown Card
+            _buildCard(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
                     'Items Breakdown',
                     style: GoogleFonts.plusJakartaSans(
-                      fontSize: 16,
+                      fontSize: 15,
                       fontWeight: FontWeight.w800,
                       color: AppColors.textPrimary,
                     ),
                   ),
                   const SizedBox(height: 14),
-                  ...items.map((item) => Padding(
-                        padding: const EdgeInsets.only(bottom: 12),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            RichText(
-                              text: TextSpan(
-                                text: '${item.name} (${item.service}) ',
-                                style: GoogleFonts.plusJakartaSans(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w500,
-                                  color: AppColors.textPrimary,
-                                ),
-                                children: [
-                                  TextSpan(
-                                    text: 'x${item.quantity}',
-                                    style: GoogleFonts.plusJakartaSans(
-                                      fontSize: 13.5,
-                                      fontWeight: FontWeight.w600,
-                                      color: const Color(0xFF64748B),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Text(
-                              '₹${item.price}',
+                  ...items.map(
+                    (item) => Padding(
+                      padding: const EdgeInsets.only(bottom: 12),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          RichText(
+                            text: TextSpan(
+                              text: '${item['name']} (${item['service']}) ',
                               style: GoogleFonts.plusJakartaSans(
-                                fontSize: 14.5,
-                                fontWeight: FontWeight.w700,
+                                fontSize: 13.5,
+                                fontWeight: FontWeight.w600,
                                 color: AppColors.textPrimary,
                               ),
+                              children: [
+                                TextSpan(
+                                  text: 'x${item['quantity']}',
+                                  style: GoogleFonts.plusJakartaSans(
+                                    fontSize: 13.5,
+                                    fontWeight: FontWeight.w500,
+                                    color: const Color(0xFF64748B),
+                                  ),
+                                ),
+                              ],
                             ),
-                          ],
-                        ),
-                      )),
+                          ),
+                          Text(
+                            '₹${item['price']}',
+                            style: GoogleFonts.plusJakartaSans(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w800,
+                              color: AppColors.textPrimary,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
                 ],
               ),
             ),
 
-            const SizedBox(height: 16),
+            const SizedBox(height: 14),
 
-            // Card 3: Bill Details
-            Container(
-              width: double.infinity,
-              padding: const EdgeInsets.all(18),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(18),
-                border: Border.all(color: const Color(0xFFE2E8F0), width: 1.2),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withValues(alpha: 0.02),
-                    blurRadius: 8,
-                    offset: const Offset(0, 2),
-                  ),
-                ],
-              ),
+            // 3. Bill Details Card
+            _buildCard(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
                     'Bill Details',
                     style: GoogleFonts.plusJakartaSans(
-                      fontSize: 16,
+                      fontSize: 15,
                       fontWeight: FontWeight.w800,
                       color: AppColors.textPrimary,
                     ),
                   ),
                   const SizedBox(height: 14),
-
-                  // Subtotal
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        'Subtotal',
-                        style: GoogleFonts.plusJakartaSans(
-                          fontSize: 14,
-                          color: const Color(0xFF64748B),
-                        ),
-                      ),
-                      Text(
-                        '₹$subtotal',
-                        style: GoogleFonts.plusJakartaSans(
-                          fontSize: 14.5,
-                          fontWeight: FontWeight.w700,
-                          color: AppColors.textPrimary,
-                        ),
-                      ),
-                    ],
+                  _buildBillRow(
+                    label: 'Subtotal',
+                    value: '₹$subtotal',
                   ),
                   const SizedBox(height: 10),
-
-                  // Delivery Partner Fee
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        'Delivery Partner Fee',
-                        style: GoogleFonts.plusJakartaSans(
-                          fontSize: 14,
-                          color: const Color(0xFF64748B),
-                        ),
-                      ),
-                      Text(
-                        'FREE',
-                        style: GoogleFonts.plusJakartaSans(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w800,
-                          color: const Color(0xFF059669),
-                        ),
-                      ),
-                    ],
+                  _buildBillRow(
+                    label: 'Delivery Partner Fee',
+                    value: 'FREE',
+                    valueColor: const Color(0xFF059669),
                   ),
                   const SizedBox(height: 10),
-
-                  // Promo Discount
-                  if (discount > 0) ...[
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          'Promo Discount',
-                          style: GoogleFonts.plusJakartaSans(
-                            fontSize: 14,
-                            color: const Color(0xFF64748B),
-                          ),
-                        ),
-                        Text(
-                          '-₹$discount',
-                          style: GoogleFonts.plusJakartaSans(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w700,
-                            color: const Color(0xFF059669),
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 12),
-                  ],
-
-                  const Divider(color: Color(0xFFF1F5F9), height: 16),
-
-                  // Grand Total
+                  _buildBillRow(
+                    label: 'Promo Discount',
+                    value: '-₹$discount',
+                    valueColor: const Color(0xFF059669),
+                  ),
+                  const SizedBox(height: 16),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
                         'Grand Total',
                         style: GoogleFonts.plusJakartaSans(
-                          fontSize: 15.5,
+                          fontSize: 15,
                           fontWeight: FontWeight.w800,
                           color: AppColors.textPrimary,
                         ),
@@ -376,7 +257,7 @@ class OrderDetailsScreen extends StatelessWidget {
                       Text(
                         '₹$grandTotal',
                         style: GoogleFonts.plusJakartaSans(
-                          fontSize: 18,
+                          fontSize: 17,
                           fontWeight: FontWeight.w800,
                           color: AppColors.primary,
                         ),
@@ -387,40 +268,26 @@ class OrderDetailsScreen extends StatelessWidget {
               ),
             ),
 
-            const SizedBox(height: 16),
+            const SizedBox(height: 14),
 
-            // Card 4: Delivery Address
-            Container(
-              width: double.infinity,
-              padding: const EdgeInsets.all(18),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(18),
-                border: Border.all(color: const Color(0xFFE2E8F0), width: 1.2),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withValues(alpha: 0.02),
-                    blurRadius: 8,
-                    offset: const Offset(0, 2),
-                  ),
-                ],
-              ),
+            // 4. Delivery Address Card
+            _buildCard(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
                     'Delivery Address',
                     style: GoogleFonts.plusJakartaSans(
-                      fontSize: 16,
+                      fontSize: 15,
                       fontWeight: FontWeight.w800,
                       color: AppColors.textPrimary,
                     ),
                   ),
-                  const SizedBox(height: 8),
+                  const SizedBox(height: 10),
                   Text(
                     deliveryAddress,
                     style: GoogleFonts.plusJakartaSans(
-                      fontSize: 13.5,
+                      fontSize: 13,
                       fontWeight: FontWeight.w400,
                       color: const Color(0xFF64748B),
                       height: 1.45,
@@ -430,24 +297,10 @@ class OrderDetailsScreen extends StatelessWidget {
               ),
             ),
 
-            const SizedBox(height: 16),
+            const SizedBox(height: 14),
 
-            // Card 5: Your Rating & Rider
-            Container(
-              width: double.infinity,
-              padding: const EdgeInsets.all(18),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(18),
-                border: Border.all(color: const Color(0xFFE2E8F0), width: 1.2),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withValues(alpha: 0.02),
-                    blurRadius: 8,
-                    offset: const Offset(0, 2),
-                  ),
-                ],
-              ),
+            // 5. Your Rating Card
+            _buildCard(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -456,18 +309,18 @@ class OrderDetailsScreen extends StatelessWidget {
                     style: GoogleFonts.plusJakartaSans(
                       fontSize: 11,
                       fontWeight: FontWeight.w700,
-                      color: const Color(0xFF64748B),
-                      letterSpacing: 0.5,
+                      color: const Color(0xFF94A3B8),
+                      letterSpacing: 0.6,
                     ),
                   ),
-                  const SizedBox(height: 6),
+                  const SizedBox(height: 8),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
                         'Delivered by $riderName',
                         style: GoogleFonts.plusJakartaSans(
-                          fontSize: 15,
+                          fontSize: 14.5,
                           fontWeight: FontWeight.w800,
                           color: AppColors.textPrimary,
                         ),
@@ -476,14 +329,14 @@ class OrderDetailsScreen extends StatelessWidget {
                         children: [
                           const Icon(
                             Icons.star_rounded,
-                            color: Color(0xFFEAB308),
+                            color: Color(0xFFF59E0B),
                             size: 20,
                           ),
                           const SizedBox(width: 4),
                           Text(
                             rating.toStringAsFixed(1),
                             style: GoogleFonts.plusJakartaSans(
-                              fontSize: 14.5,
+                              fontSize: 14,
                               fontWeight: FontWeight.w800,
                               color: AppColors.textPrimary,
                             ),
@@ -498,23 +351,39 @@ class OrderDetailsScreen extends StatelessWidget {
 
             const SizedBox(height: 20),
 
-            // Download Invoice Button
+            // 6. Download Invoice Button
             Container(
               width: double.infinity,
               height: 52,
               decoration: BoxDecoration(
                 color: Colors.white,
-                borderRadius: BorderRadius.circular(14),
+                borderRadius: BorderRadius.circular(16),
                 border: Border.all(color: const Color(0xFFE2E8F0), width: 1.2),
               ),
               child: Material(
                 color: Colors.transparent,
                 child: InkWell(
-                  borderRadius: BorderRadius.circular(14),
+                  borderRadius: BorderRadius.circular(16),
                   onTap: () {
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
-                        content: Text('Downloading Invoice for $orderId...'),
+                        content: Row(
+                          children: [
+                            const Icon(
+                              Icons.download_done_rounded,
+                              color: Colors.white,
+                            ),
+                            const SizedBox(width: 10),
+                            Expanded(
+                              child: Text(
+                                'Invoice for $orderId downloaded successfully!',
+                                style: GoogleFonts.plusJakartaSans(
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
                         backgroundColor: AppColors.primary,
                       ),
                     );
@@ -523,9 +392,9 @@ class OrderDetailsScreen extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       const Icon(
-                        Icons.file_download_outlined,
+                        Icons.download_rounded,
                         color: AppColors.primary,
-                        size: 22,
+                        size: 20,
                       ),
                       const SizedBox(width: 8),
                       Text(
@@ -546,6 +415,54 @@ class OrderDetailsScreen extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+
+  Widget _buildCard({required Widget child}) {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: const Color(0xFFE2E8F0), width: 1.2),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.02),
+            blurRadius: 6,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
+      child: child,
+    );
+  }
+
+  Widget _buildBillRow({
+    required String label,
+    required String value,
+    Color? valueColor,
+  }) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(
+          label,
+          style: GoogleFonts.plusJakartaSans(
+            fontSize: 13.5,
+            fontWeight: FontWeight.w500,
+            color: const Color(0xFF64748B),
+          ),
+        ),
+        Text(
+          value,
+          style: GoogleFonts.plusJakartaSans(
+            fontSize: 13.5,
+            fontWeight: FontWeight.w700,
+            color: valueColor ?? AppColors.textPrimary,
+          ),
+        ),
+      ],
     );
   }
 }

@@ -195,7 +195,7 @@ void main() {
     expect(find.text('Start Live Chat'), findsOneWidget);
   });
 
-  testWidgets('Order Details screen renders ID, breakdown, bill and download invoice',
+  testWidgets('Order Details screen renders exact layout, items, bill and invoice button',
       (WidgetTester tester) async {
     await tester.pumpWidget(
       MaterialApp(
@@ -206,10 +206,13 @@ void main() {
     expect(find.text('Order Details'), findsOneWidget);
     expect(find.text('ID: #YD-881590'), findsOneWidget);
     expect(find.text('DELIVERED'), findsOneWidget);
+    expect(find.text('Completed on 18 Oct 2026, 4:15 PM'), findsOneWidget);
     expect(find.text('Items Breakdown'), findsOneWidget);
     expect(find.text('Bill Details'), findsOneWidget);
     expect(find.text('Delivery Address'), findsOneWidget);
+    expect(find.text('YOUR RATING'), findsOneWidget);
     expect(find.text('Delivered by Rahul'), findsOneWidget);
+    expect(find.text('5.0'), findsOneWidget);
     expect(find.text('Download Invoice'), findsOneWidget);
   });
 }

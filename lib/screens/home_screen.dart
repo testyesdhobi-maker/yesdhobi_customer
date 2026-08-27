@@ -575,31 +575,31 @@ class _HomeScreenState extends State<HomeScreen> {
                         builder: (context) => const OrderDetailsScreen(
                           orderId: '#YD-892740',
                           status: 'RIDER ON WAY',
-                          completedDate: 'Placed on 24 Oct 2026, 11:30 AM',
+                          dateSubtitle: 'Ordered on 24 Oct 2026, 11:30 AM',
                           items: [
-                            OrderItemBreakdown(
-                              name: 'Shirt',
-                              service: 'Wash & Iron',
-                              quantity: 2,
-                              price: 80,
-                            ),
-                            OrderItemBreakdown(
-                              name: 'T-Shirt',
-                              service: 'Wash & Iron',
-                              quantity: 1,
-                              price: 30,
-                            ),
-                            OrderItemBreakdown(
-                              name: 'Bedsheet',
-                              service: 'Wash & Fold',
-                              quantity: 1,
-                              price: 120,
-                            ),
+                            {
+                              'name': 'Shirt',
+                              'service': 'Wash & Iron',
+                              'quantity': 2,
+                              'price': 80,
+                            },
+                            {
+                              'name': 'T-Shirt',
+                              'service': 'Wash & Iron',
+                              'quantity': 1,
+                              'price': 30,
+                            },
+                            {
+                              'name': 'Bedsheet',
+                              'service': 'Wash & Fold',
+                              'quantity': 1,
+                              'price': 120,
+                            },
                           ],
                           subtotal: 230,
                           discount: 46,
                           grandTotal: 184,
-                          riderName: 'Rahul',
+                          riderName: 'Ramesh Kumar',
                           rating: 5.0,
                         ),
                       ),
@@ -764,26 +764,26 @@ class _HomeScreenState extends State<HomeScreen> {
                         builder: (context) => const OrderDetailsScreen(
                           orderId: '#YD-881590',
                           status: 'DELIVERED',
-                          completedDate: 'Completed on 18 Oct 2026, 4:15 PM',
+                          dateSubtitle: 'Completed on 18 Oct 2026, 4:15 PM',
                           items: [
-                            OrderItemBreakdown(
-                              name: 'Shirt',
-                              service: 'Wash & Iron',
-                              quantity: 2,
-                              price: 80,
-                            ),
-                            OrderItemBreakdown(
-                              name: 'T-Shirt',
-                              service: 'Wash & Iron',
-                              quantity: 1,
-                              price: 30,
-                            ),
-                            OrderItemBreakdown(
-                              name: 'Bedsheet',
-                              service: 'Wash & Fold',
-                              quantity: 1,
-                              price: 120,
-                            ),
+                            {
+                              'name': 'Shirt',
+                              'service': 'Wash & Iron',
+                              'quantity': 2,
+                              'price': 80,
+                            },
+                            {
+                              'name': 'T-Shirt',
+                              'service': 'Wash & Iron',
+                              'quantity': 1,
+                              'price': 30,
+                            },
+                            {
+                              'name': 'Bedsheet',
+                              'service': 'Wash & Fold',
+                              'quantity': 1,
+                              'price': 120,
+                            },
                           ],
                           subtotal: 230,
                           discount: 46,
@@ -862,7 +862,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 ),
                                 const SizedBox(height: 4),
                                 Text(
-                                  '4 Items • Wash & Iron',
+                                  '4 Items • Wash & Fold',
                                   style: GoogleFonts.plusJakartaSans(
                                     fontSize: 13.5,
                                     fontWeight: FontWeight.w700,
@@ -905,7 +905,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               Navigator.of(context).push(
                                 MaterialPageRoute(
                                   builder: (context) => const SelectItemsScreen(
-                                    initialCategory: ServiceCategory.washAndIron,
+                                    initialCategory: ServiceCategory.washAndFold,
                                   ),
                                 ),
                               );
@@ -952,20 +952,18 @@ class _HomeScreenState extends State<HomeScreen> {
                         builder: (context) => const OrderDetailsScreen(
                           orderId: '#YD-871402',
                           status: 'CANCELLED',
-                          completedDate: 'Cancelled on 10 Oct 2026, 2:10 PM',
+                          dateSubtitle: 'Cancelled on 10 Oct 2026, 2:00 PM',
                           items: [
-                            OrderItemBreakdown(
-                              name: 'Saree',
-                              service: 'Steam Press',
-                              quantity: 5,
-                              price: 75,
-                            ),
+                            {
+                              'name': 'Saree Press',
+                              'service': 'Steam Press',
+                              'quantity': 5,
+                              'price': 75,
+                            },
                           ],
                           subtotal: 75,
                           discount: 0,
                           grandTotal: 75,
-                          riderName: 'Unassigned',
-                          rating: 0.0,
                         ),
                       ),
                     );
