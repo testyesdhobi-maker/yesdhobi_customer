@@ -230,26 +230,32 @@ class _OrderSummaryScreenState extends State<OrderSummaryScreen> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Row(
-                    children: [
-                      const Icon(
-                        Icons.confirmation_number_outlined,
-                        color: Color(0xFF16A34A),
-                        size: 20,
-                      ),
-                      const SizedBox(width: 10),
-                      Text(
-                        _cartManager.couponApplied
-                            ? '${_cartManager.couponCode} Applied!'
-                            : 'Have a coupon code?',
-                        style: GoogleFonts.plusJakartaSans(
-                          fontSize: 13.5,
-                          fontWeight: FontWeight.w700,
-                          color: const Color(0xFF16A34A),
+                  Expanded(
+                    child: Row(
+                      children: [
+                        const Icon(
+                          Icons.confirmation_number_outlined,
+                          color: Color(0xFF16A34A),
+                          size: 20,
                         ),
-                      ),
-                    ],
+                        const SizedBox(width: 10),
+                        Expanded(
+                          child: Text(
+                            _cartManager.couponApplied
+                                ? '${_cartManager.couponCode} Applied!'
+                                : 'Have a coupon code?',
+                            overflow: TextOverflow.ellipsis,
+                            style: GoogleFonts.plusJakartaSans(
+                              fontSize: 13.5,
+                              fontWeight: FontWeight.w700,
+                              color: const Color(0xFF16A34A),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
+                  const SizedBox(width: 8),
                   GestureDetector(
                     onTap: () => _cartManager.toggleCoupon(),
                     child: Text(
@@ -331,12 +337,14 @@ class _OrderSummaryScreenState extends State<OrderSummaryScreen> {
                       ),
                     ),
                     const SizedBox(width: 8),
-                    Text(
-                      'Pay Online (UPI / Card)',
-                      style: GoogleFonts.plusJakartaSans(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w600,
-                        color: AppColors.textPrimary,
+                    Expanded(
+                      child: Text(
+                        'Pay Online (UPI / Card)',
+                        style: GoogleFonts.plusJakartaSans(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w600,
+                          color: AppColors.textPrimary,
+                        ),
                       ),
                     ),
                   ],
@@ -395,12 +403,14 @@ class _OrderSummaryScreenState extends State<OrderSummaryScreen> {
                       size: 20,
                     ),
                     const SizedBox(width: 8),
-                    Text(
-                      'Pay on Delivery / Pickup (Cash or UPI)',
-                      style: GoogleFonts.plusJakartaSans(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w600,
-                        color: AppColors.textPrimary,
+                    Expanded(
+                      child: Text(
+                        'Pay on Delivery / Pickup (Cash or UPI)',
+                        style: GoogleFonts.plusJakartaSans(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w600,
+                          color: AppColors.textPrimary,
+                        ),
                       ),
                     ),
                   ],

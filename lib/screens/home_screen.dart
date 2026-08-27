@@ -439,9 +439,9 @@ class _HomeScreenState extends State<HomeScreen> {
             itemCount: _serviceCards.length,
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 3,
-              crossAxisSpacing: 12,
-              mainAxisSpacing: 14,
-              childAspectRatio: 0.92,
+              crossAxisSpacing: 10,
+              mainAxisSpacing: 12,
+              childAspectRatio: 0.76,
             ),
             itemBuilder: (context, index) {
               final card = _serviceCards[index];
@@ -466,13 +466,13 @@ class _HomeScreenState extends State<HomeScreen> {
                       _onServiceSelected(card['category'] as ServiceCategory);
                     },
                     child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 12),
+                      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 8),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Container(
-                            width: 44,
-                            height: 44,
+                            width: 40,
+                            height: 40,
                             decoration: BoxDecoration(
                               color: card['bg'] as Color,
                               borderRadius: BorderRadius.circular(12),
@@ -480,16 +480,17 @@ class _HomeScreenState extends State<HomeScreen> {
                             child: Icon(
                               card['icon'] as IconData,
                               color: card['tint'] as Color,
-                              size: 22,
+                              size: 20,
                             ),
                           ),
-                          const SizedBox(height: 8),
+                          const SizedBox(height: 6),
                           Text(
                             card['title'] as String,
                             textAlign: TextAlign.center,
                             maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
                             style: GoogleFonts.plusJakartaSans(
-                              fontSize: 12.5,
+                              fontSize: 12,
                               fontWeight: FontWeight.w700,
                               color: AppColors.textPrimary,
                               height: 1.15,
@@ -537,14 +538,18 @@ class _HomeScreenState extends State<HomeScreen> {
           const SizedBox(height: 16),
 
           // Filter Segment Pills: Active, Completed, Cancelled
-          Row(
-            children: [
-              _buildOrderFilterChip('Active', 0),
-              const SizedBox(width: 10),
-              _buildOrderFilterChip('Completed', 1),
-              const SizedBox(width: 10),
-              _buildOrderFilterChip('Cancelled', 2),
-            ],
+          SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            physics: const BouncingScrollPhysics(),
+            child: Row(
+              children: [
+                _buildOrderFilterChip('Active', 0),
+                const SizedBox(width: 10),
+                _buildOrderFilterChip('Completed', 1),
+                const SizedBox(width: 10),
+                _buildOrderFilterChip('Cancelled', 2),
+              ],
+            ),
           ),
 
           const SizedBox(height: 20),
