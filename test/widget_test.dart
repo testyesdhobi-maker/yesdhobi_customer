@@ -14,6 +14,7 @@ import 'package:yes_dhobi/screens/order_success_screen.dart';
 import 'package:yes_dhobi/screens/track_order_screen.dart';
 import 'package:yes_dhobi/screens/manage_addresses_screen.dart';
 import 'package:yes_dhobi/screens/help_support_screen.dart';
+import 'package:yes_dhobi/screens/order_details_screen.dart';
 import 'package:yes_dhobi/theme/app_theme.dart';
 import 'package:yes_dhobi/models/laundry_item.dart';
 
@@ -192,5 +193,23 @@ void main() {
     expect(find.text('WhatsApp'), findsOneWidget);
     expect(find.text('Call Support'), findsOneWidget);
     expect(find.text('Start Live Chat'), findsOneWidget);
+  });
+
+  testWidgets('Order Details screen renders ID, breakdown, bill and download invoice',
+      (WidgetTester tester) async {
+    await tester.pumpWidget(
+      MaterialApp(
+        theme: AppTheme.lightTheme,
+        home: const OrderDetailsScreen(),
+      ),
+    );
+    expect(find.text('Order Details'), findsOneWidget);
+    expect(find.text('ID: #YD-881590'), findsOneWidget);
+    expect(find.text('DELIVERED'), findsOneWidget);
+    expect(find.text('Items Breakdown'), findsOneWidget);
+    expect(find.text('Bill Details'), findsOneWidget);
+    expect(find.text('Delivery Address'), findsOneWidget);
+    expect(find.text('Delivered by Rahul'), findsOneWidget);
+    expect(find.text('Download Invoice'), findsOneWidget);
   });
 }
