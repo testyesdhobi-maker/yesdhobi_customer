@@ -32,11 +32,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
   }
 
   void _handleSignUp() {
-    String phone = _mobileController.text.trim();
-    if (phone.isEmpty) {
-      phone = '+91 98765 43210';
-    }
-
     setState(() {
       _isLoading = true;
     });
@@ -48,7 +43,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         });
         Navigator.of(context).push(
           MaterialPageRoute(
-            builder: (context) => OtpVerificationScreen(phoneNumber: phone),
+            builder: (context) => const LoginScreen(),
           ),
         );
       }
