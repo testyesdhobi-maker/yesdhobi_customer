@@ -20,7 +20,7 @@ class _SchedulePickupScreenState extends State<SchedulePickupScreen> {
 
   final List<Map<String, String>> _dateOptions = [
     {'day': 'Today', 'date': '24'},
-    {'day': 'Tomorrow', 'date': '25'},
+    {'day': 'Tomo', 'date': '25'},
     {'day': 'Mon', 'date': '26'},
     {'day': 'Tue', 'date': '27'},
     {'day': 'Wed', 'date': '28'},
